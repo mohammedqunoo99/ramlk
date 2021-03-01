@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 const String IS_LOGIN = "login";
 const String IS_SKIP = "skip";
-const String BaseUrl = "http://www.ramlekaap.com/larashop/public/api/";
+const String BaseUrl = "http://www.ramlak.app/larashop/public/api/";
 
 Color maincolor = Color.fromRGBO(16, 39, 23, 1);
 Color othercolor = Color.fromRGBO(255, 246, 237, 1);

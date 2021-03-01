@@ -262,7 +262,7 @@ Future<void> _showMyDialog1(BuildContext context) async {
                         // print('Log In');
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (ctx) => home(),
+                              builder: (ctx) => MenuDashboardPage(),
                             ),
                           );
                       },

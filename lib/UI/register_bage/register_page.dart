@@ -1,28 +1,99 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:ramlk/UI/login_page/bloc/login_bloc.dart';
+import 'package:ramlk/UI/register_bage//bloc/register_event.dart';
 import 'package:ramlk/UI/login_page/login_page.dart';
 
-
-import 'package:ramlk/core/app_localizations.dart';
 import 'package:ramlk/core/base_widget/base_click-2.dart';
 import 'package:ramlk/core/constent.dart';
 import 'package:ramlk/core/style/base_color.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as JSON;
 
-// import '../../injectoin.dart';
+import 'bloc/register_bloc.dart';
+// import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+
+import '../../injectoin.dart';
+
+final _bloc = sl<SignUpBloc>();
 
 
+String _message = 'Log in/out by pressing the buttons below.';
 class register extends StatefulWidget {
   @override
   _registerState createState() => _registerState();
 }
 
 class _registerState extends State<register> {
+
+
+  // final facebookLogin = FacebookLogin();
+  // static final FacebookLogin facebookSignIn = new FacebookLogin();
+
+
+  //
+  // Future<Null> _login() async {
+  //   final FacebookLoginResult result =
+  //   await facebookSignIn.logIn(['email']);
+  //
+  //   switch (result.status) {
+  //     case FacebookLoginStatus.loggedIn:
+  //       final FacebookAccessToken accessToken = result.accessToken;
+  //       _showMessage('''
+  //        Logged in!
+  //
+  //        Token: ${accessToken.token}
+  //        User id: ${accessToken.userId}
+  //        Expires: ${accessToken.expires}
+  //        Permissions: ${accessToken.permissions}
+  //        Declined permissions: ${accessToken.declinedPermissions}
+  //        ''');
+  //       break;
+  //     case FacebookLoginStatus.cancelledByUser:
+  //       _showMessage('Login cancelled by the user.');
+  //       break;
+  //     case FacebookLoginStatus.error:
+  //       _showMessage('Something went wrong with the login process.\n'
+  //           'Here\'s the error Facebook gave us: ${result.errorMessage}');
+  //       break;
+  //   }
+  // }
+  //
+  // Future<Null> _logOut() async {
+  //   await facebookSignIn.logOut();
+  //   _showMessage('Logged out.');
+  // }
+  //
+  // void _showMessage(String message) {
+  //   setState(() {
+  //     _message = message;
+  //   });
+  // }
+  //
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   final _userNameController = TextEditingController();
+  final _emailController = TextEditingController();
   // final _bloc = sl<LoginBloc>();
 
+
+  String _message = 'Log in/out by pressing the buttons below.';
   String vmail="",vv="",textphonelogin="",textphone="",textpasswordlogin="",textpassword="",textpasswordconfirm="",textemail="",textname="";
   String v="",vpassword='',vcpassword='',vname='';
   String phone_number='';
@@ -33,6 +104,7 @@ class _registerState extends State<register> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body:SingleChildScrollView(
         child: Column(
@@ -91,6 +163,7 @@ class _registerState extends State<register> {
                     ),
 
                     Container(
+
                       padding: EdgeInsets.only(right: 20,top: 0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -117,6 +190,7 @@ class _registerState extends State<register> {
                       ),
                     ),
 Container(
+
 alignment: Alignment.center,
   // height: 100,
   padding: EdgeInsets.only(left: 20,right: 20,top: 20,bottom: 0),
@@ -210,7 +284,7 @@ alignment: Alignment.center,
                       child:  _buildTextField(
                         context: context,
                         obscureText: false,
-                        controller: _userNameController,
+                        controller: _emailController,
                         hintText: '...الايميل' ,
 
                       ),
@@ -232,24 +306,25 @@ alignment: Alignment.center,
                       padding: EdgeInsets.all(20),
 
                       child: baseClick2(
-                          // onTap: () {
-                          //   if(_phoneControllerlogin.text.isEmpty){
-                          //     setState(() {
-                          //       vmaillogin="red";
-                          //       v="";
-                          //       textphonelogin="";
-                          //       textphonelogin=AppLocalizations.of(context).translate("phone required");
-                          //
-                          //     });
-                          //   }
-                          //   else  {
-                          //     _bloc.add(TryLogin((b) => b
-                          //       ..mobile=_phoneControllerlogin.text
-                          //
-                          //     ));
-                          //
-                          //   }
-                          // },
+                          onTap: () {
+                            if (_userNameController.text.isEmpty) {
+                              error('full name required');
+                            } else if (_phoneController.text.isEmpty) {
+                              error('phone required');
+                            } else if (_emailController.text.isEmpty) {
+                              error(('Email required'));
+                            } else if (!_emailController.text.contains("@")) {
+                              error("invalid email");
+                            }
+                            else {
+                              _bloc.add(SignUp((b) => b
+                                ..mobile = _phoneController.text
+                                ..name = _userNameController.text
+                                ..email = _emailController.text
+                              )
+                              );
+                            }
+                          },
                           title: 'تسجيل الدخول ',
 
 
@@ -291,9 +366,15 @@ alignment: Alignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          InkWell(
+                            onTap: () async {
+                            },
+                            child: CircleItems(
+                              image: 'assets/images/Facebook.png',
+                            ),
+                          ),
+
                           CircleItems(
-                            image: 'assets/images/Facebook.png',
-                          ),  CircleItems(
                             image: 'assets/images/Google+.png',
                           ),
                           CircleItems(
@@ -336,12 +417,14 @@ Widget _buildTextField({
 
           ),
       child:  TextField(
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: Colors.green),
         keyboardType: textInputType,
         obscureText: obscureText,
         controller: controller,
         decoration: InputDecoration(
-
+          border: OutlineInputBorder(
+              borderSide:BorderSide.none
+          ),
           hintText: hintText,
           // AppLocalizations.of(context).translate(hintText),
           hintStyle: TextStyle(color: HexColor('C4C4C4'), fontSize: 13,
@@ -372,6 +455,7 @@ Widget _buildTextField({
     ],
   );
 }
+
 Widget _buildLoginOrSingupText2(BuildContext context) {
   TextStyle defaultStyle = TextStyle(color: Colors.white, fontSize: 13.0);
   TextStyle linkStyle = TextStyle(color: Colors.blue, fontSize: 13, decoration: TextDecoration.underline,);
@@ -401,4 +485,19 @@ Widget _buildLoginOrSingupText2(BuildContext context) {
       ],
     ),
   );
+
 }
+void error(String errorCode) {
+  if (errorCode.isNotEmpty) {
+    Fluttertoast.showToast(
+        msg: errorCode,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+        fontSize: 14.0);
+    // _bloc.add(ClearError());
+  }
+}
+

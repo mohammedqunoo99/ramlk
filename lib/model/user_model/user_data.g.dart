@@ -24,6 +24,12 @@ class _$UserDataSerializer implements StructuredSerializer<UserData> {
         ..add(serializers.serialize(object.id,
             specifiedType: const FullType(int)));
     }
+    if (object.name != null) {
+      result
+        ..add('name')
+        ..add(serializers.serialize(object.name,
+            specifiedType: const FullType(String)));
+    }
     if (object.image != null) {
       result
         ..add('image')
@@ -186,25 +192,7 @@ class _$UserDataSerializer implements StructuredSerializer<UserData> {
         ..add(serializers.serialize(object.language,
             specifiedType: const FullType(String)));
     }
-    if (object.name != null) {
-      result
-        ..add('name')
-        ..add(serializers.serialize(object.name,
-            specifiedType: const FullType(String)));
-    }
-    // if (object.roles != null) {
-    //   result
-    //     ..add('roles')
-    //     ..add(serializers.serialize(object.roles,
-    //         specifiedType:
-    //             const FullType(BuiltList, const [const FullType(Roles)])));
-    // }
-    // if (object.pivot != null) {
-    //   result
-    //     ..add('pivot')
-    //     ..add(serializers.serialize(object.pivot,
-    //         specifiedType: const FullType(Pivot)));
-    // }
+
     return result;
   }
 
@@ -222,6 +210,10 @@ class _$UserDataSerializer implements StructuredSerializer<UserData> {
         case 'id':
           result.id = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
+          break;
+        case 'name':
+          result.name = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
           break;
         case 'image':
           result.image = serializers.deserialize(value,
@@ -331,20 +323,44 @@ class _$UserDataSerializer implements StructuredSerializer<UserData> {
           result.language = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
-        case 'name':
-          result.name = serializers.deserialize(value,
+
+        case 'firebase_token':
+          result.firebase_token = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
-        // case 'roles':
-        //   result.roles.replace(serializers.deserialize(value,
-        //           specifiedType:
-        //               const FullType(BuiltList, const [const FullType(Roles)]))
-        //       as BuiltList<Object>);
-        //   break;
-        // case 'pivot':
-        //   result.pivot.replace(serializers.deserialize(value,
-        //       specifiedType: const FullType(Pivot)) as Pivot);
-        //   break;
+        case 'lang':
+          result.lang = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'most_viewed':
+          result.most_viewed = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
+        case 'user_category_id':
+          result.user_category_id = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
+        case 'working_hours':
+          result.working_hours = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'latitude':
+          result.latitude = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'longitude':
+          result.longitude = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'tokenFacebook':
+          result.tokenFacebook = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'address':
+          result.address = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+
       }
     }
 
@@ -355,6 +371,8 @@ class _$UserDataSerializer implements StructuredSerializer<UserData> {
 class _$UserData extends UserData {
   @override
   final int id;
+  @override
+  final String name;
   @override
   final String image;
   @override
@@ -409,18 +427,32 @@ class _$UserData extends UserData {
   final int currency;
   @override
   final String language;
+
   @override
-  final String name;
-  // @override
-  // final BuiltList<Roles> roles;
-  // @override
-  // final Pivot pivot;
+  final String firebase_token;
+  @override
+  final String lang;
+  @override
+  final int most_viewed;
+  @override
+  final int user_category_id;
+  @override
+  final String working_hours;
+  @override
+  final String latitude;
+  @override
+  final String longitude;
+  @override
+  final String tokenFacebook;
+  @override
+  final String address;
 
   factory _$UserData([void Function(UserDataBuilder) updates]) =>
       (new UserDataBuilder()..update(updates)).build();
 
   _$UserData._(
       {this.id,
+      this.name,
       this.image,
       this.full_name,
       this.mobile,
@@ -448,9 +480,16 @@ class _$UserData extends UserData {
       this.notification_status,
       this.currency,
       this.language,
-      this.name,
-      // this.roles,
-      // this.pivot
+
+      this.firebase_token,
+      this.lang,
+      this.most_viewed,
+      this.user_category_id,
+      this.working_hours,
+      this.latitude,
+      this.longitude,
+      this.tokenFacebook,
+      this.address,
       })
       : super._();
 
@@ -466,6 +505,7 @@ class _$UserData extends UserData {
     if (identical(other, this)) return true;
     return other is UserData &&
         id == other.id &&
+        name == other.name &&
         image == other.image &&
         full_name == other.full_name &&
         mobile == other.mobile &&
@@ -492,60 +532,16 @@ class _$UserData extends UserData {
         reset_verified == other.reset_verified &&
         notification_status == other.notification_status &&
         currency == other.currency &&
-        language == other.language &&
-        name == other.name
-        // &&
-        // roles == other.roles &&
-        // pivot == other.pivot
-    ;
+        language == other.language ;
   }
 
-  @override
-  // int get hashCode {
-  //   return $jf($jc(
-  //       $jc(
-  //           $jc(
-  //               $jc(
-  //                   $jc(
-  //                       $jc(
-  //                           $jc(
-  //                               $jc(
-  //                                   $jc(
-  //                                       $jc(
-  //                                           $jc(
-  //                                               $jc(
-  //                                                   $jc(
-  //                                                       $jc(
-  //                                                           $jc(
-  //                                                               $jc(
-  //                                                                   $jc(
-  //                                                                       $jc(
-  //                                                                           $jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc(0, id.hashCode), image.hashCode), full_name.hashCode), mobile.hashCode), email.hashCode), mobile_verified_at.hashCode), email_verified_at.hashCode), note.hashCode), status.hashCode), notification.hashCode), created_at.hashCode), updated_at.hashCode),
-  //                                                                               logo.hashCode),
-  //                                                                           company_name.hashCode),
-  //                                                                       company_description.hashCode),
-  //                                                                   video_360.hashCode),
-  //                                                               delivery.hashCode),
-  //                                                           phone.hashCode),
-  //                                                       whatsapp.hashCode),
-  //                                                   website.hashCode),
-  //                                               facebook.hashCode),
-  //                                           instagram.hashCode),
-  //                                       consultancies.hashCode),
-  //                                   reset_token.hashCode),
-  //                               reset_verified.hashCode),
-  //                           notification_status.hashCode),
-  //                       currency.hashCode),
-  //                   language.hashCode),
-  //               name.hashCode),
-  //           roles.hashCode),
-  //       pivot.hashCode));
-  // }
+
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('UserData')
           ..add('id', id)
+          ..add('name', name)
           ..add('image', image)
           ..add('full_name', full_name)
           ..add('mobile', mobile)
@@ -573,8 +569,16 @@ class _$UserData extends UserData {
           ..add('notification_status', notification_status)
           ..add('currency', currency)
           ..add('language', language)
-          ..add('name', name)
 
+          ..add('firebase_token', firebase_token)
+          ..add('lang', lang)
+          ..add('most_viewed', most_viewed)
+          ..add('user_category_id', user_category_id)
+          ..add('working_hours', working_hours)
+          ..add('latitude', latitude)
+          ..add('longitude', longitude)
+          ..add('tokenFacebook', tokenFacebook)
+          ..add('address', address)
         )
         .toString();
   }
@@ -586,6 +590,10 @@ class UserDataBuilder implements Builder<UserData, UserDataBuilder> {
   int _id;
   int get id => _$this._id;
   set id(int id) => _$this._id = id;
+
+  String _name;
+  String get name => _$this._name;
+  set name(String name) => _$this._name = name;
 
   String _image;
   String get image => _$this._image;
@@ -701,23 +709,53 @@ class UserDataBuilder implements Builder<UserData, UserDataBuilder> {
   String get language => _$this._language;
   set language(String language) => _$this._language = language;
 
-  String _name;
-  String get name => _$this._name;
-  set name(String name) => _$this._name = name;
-  //
-  // ListBuilder<Roles> _roles;
-  // ListBuilder<Roles> get roles => _$this._roles ??= new ListBuilder<Roles>();
-  // set roles(ListBuilder<Roles> roles) => _$this._roles = roles;
-  //
-  // PivotBuilder _pivot;
-  // PivotBuilder get pivot => _$this._pivot ??= new PivotBuilder();
-  // set pivot(PivotBuilder pivot) => _$this._pivot = pivot;
+
+  String _firebase_token;
+  String get firebase_token => _$this._firebase_token;
+  set firebase_token(String firebase_token) =>
+      _$this._firebase_token = firebase_token;
+
+  String _lang;
+  String get lang => _$this._lang;
+  set lang(String lang) => _$this._lang = lang;
+
+  int _most_viewed;
+  int get most_viewed => _$this._most_viewed;
+  set most_viewed(int most_viewed) => _$this._most_viewed = most_viewed;
+
+  int _user_category_id;
+  int get user_category_id => _$this._user_category_id;
+  set user_category_id(int user_category_id) =>
+      _$this._user_category_id = user_category_id;
+
+  String _working_hours;
+  String get working_hours => _$this._working_hours;
+  set working_hours(String working_hours) =>
+      _$this._working_hours = working_hours;
+
+  String _latitude;
+  String get latitude => _$this._latitude;
+  set latitude(String latitude) => _$this._latitude = latitude;
+
+  String _longitude;
+  String get longitude => _$this._longitude;
+  set longitude(String longitude) => _$this._longitude = longitude;
+
+  String _tokenFacebook;
+  String get tokenFacebook => _$this._tokenFacebook;
+  set tokenFacebook(String tokenFacebook) =>
+      _$this._tokenFacebook = tokenFacebook;
+
+  String _address;
+  String get address => _$this._address;
+  set address(String address) => _$this._address = address;
 
   UserDataBuilder();
 
   UserDataBuilder get _$this {
     if (_$v != null) {
       _id = _$v.id;
+      _name = _$v.name;
       _image = _$v.image;
       _full_name = _$v.full_name;
       _mobile = _$v.mobile;
@@ -745,9 +783,16 @@ class UserDataBuilder implements Builder<UserData, UserDataBuilder> {
       _notification_status = _$v.notification_status;
       _currency = _$v.currency;
       _language = _$v.language;
-      _name = _$v.name;
-      // _roles = _$v.roles?.toBuilder();
-      // _pivot = _$v.pivot?.toBuilder();
+
+      _firebase_token = _$v.firebase_token;
+      _lang = _$v.lang;
+      _most_viewed = _$v.most_viewed;
+      _user_category_id = _$v.user_category_id;
+      _working_hours = _$v.working_hours;
+      _latitude = _$v.latitude;
+      _longitude = _$v.longitude;
+      _tokenFacebook = _$v.tokenFacebook;
+      _address = _$v.address;
       _$v = null;
     }
     return this;
@@ -773,6 +818,7 @@ class UserDataBuilder implements Builder<UserData, UserDataBuilder> {
       _$result = _$v ??
           new _$UserData._(
               id: id,
+              name: name,
               image: image,
               full_name: full_name,
               mobile: mobile,
@@ -800,17 +846,20 @@ class UserDataBuilder implements Builder<UserData, UserDataBuilder> {
               notification_status: notification_status,
               currency: currency,
               language: language,
-              name: name,
-              // roles: _roles?.build(),
-              // pivot: _pivot?.build()
-          );
+
+              firebase_token: firebase_token,
+              lang: lang,
+              most_viewed: most_viewed,
+              user_category_id: user_category_id,
+              working_hours: working_hours,
+              latitude: latitude,
+              longitude: longitude,
+              tokenFacebook: tokenFacebook,
+              address: address,
+              );
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'roles';
-        // _roles?.build();
-        _$failedField = 'pivot';
-        // _pivot?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'UserData', _$failedField, e.toString());

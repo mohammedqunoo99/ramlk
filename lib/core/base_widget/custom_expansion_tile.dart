@@ -193,7 +193,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
                   padding: const EdgeInsets.only(right:8.0),
                   child: DefaultTextStyle(
                     style: Theme.of(context).textTheme.subhead.copyWith(
-                      color: AppColor.orangeColor,
+                      color: AppColor.greenColor,
                     ),
                     child: widget.title,
                   ),
@@ -203,7 +203,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
                   child: Icon(
                     Icons.expand_more,
                     size: 20,
-                    color: AppColor.orangeColor,
+                    color: AppColor.greenColor,
                   ),
                 ),
               ],
